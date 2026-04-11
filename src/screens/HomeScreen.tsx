@@ -1,37 +1,38 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import AppButton from '../components/ui/AppButton';
-import CollectionCard, { Collection } from '../components/ui/CollectionCard';
-import ProductGridScreen from './ProductGridScreen';
-import { Theme } from '../constants/Theme';
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import AppButton from "../components/ui/AppButton";
+import CollectionCard, { Collection } from "../components/ui/CollectionCard";
+import { MenuRow } from "../components/ui/MenuRow";
+import ProductGridScreen from "./ProductGridScreen";
+import { Theme } from "../constants/Theme";
 
 const MOCK_COLLECTIONS: Collection[] = [
   {
-    id: '1',
-    name: 'Tahnyc',
-    category: 'Skin Care',
-    tag: 'Eco-friendly',
-    imageSource: require('../../assets/images/products/Tahnyc-brand.webp'),
+    id: "1",
+    name: "Tahnyc",
+    category: "Skin Care",
+    tag: "Eco-friendly",
+    imageSource: require("../../assets/images/products/Tahnyc-brand.webp"),
   },
   {
-    id: '2',
-    name: 'Lumio',
-    category: 'Éclairage',
-    tag: 'Exclusivité',
-    imageSource: require('../../assets/images/products/Lumio-brand.webp'),
+    id: "2",
+    name: "Lumio",
+    category: "Éclairage",
+    tag: "Exclusivité",
+    imageSource: require("../../assets/images/products/Lumio-brand.webp"),
   },
   {
-    id: '3',
-    name: 'Brom & Jakobsen',
-    category: 'Audio',
-    tag: 'Série Limitée',
-    imageSource: require('../../assets/images/products/Brom-Jakobsen-brand.webp'),
+    id: "3",
+    name: "Brom & Jakobsen",
+    category: "Audio",
+    tag: "Série Limitée",
+    imageSource: require("../../assets/images/products/Brom-Jakobsen-brand.webp"),
   },
 ];
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView style={styles.root} edges={['top']}>
+    <SafeAreaView style={styles.root} edges={["top"]}>
       <ScrollView
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
@@ -47,8 +48,16 @@ export default function HomeScreen() {
         <ProductGridScreen />
 
         <View style={styles.buttonGroup}>
-          <AppButton variant="primary"   title="Ajouter au panier" onPress={() => {}} />
-          <AppButton variant="secondary" title="Voir tout"          onPress={() => {}} />
+          <AppButton
+            variant="primary"
+            title="Ajouter au panier"
+            onPress={() => {}}
+          />
+          <AppButton variant="secondary" title="Voir tout" onPress={() => {}} />
+        </View>
+
+        <View style={styles.menuSection}>
+          <MenuRow label="Besoin d'aide ?" icon="👀" onPress={() => {}} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -76,6 +85,10 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     gap: Theme.spacing.md,
+    paddingHorizontal: Theme.spacing.lg,
+  },
+  menuSection: {
+    marginTop: Theme.spacing.xl,
     paddingHorizontal: Theme.spacing.lg,
   },
 });
