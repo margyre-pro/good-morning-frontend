@@ -3,7 +3,7 @@ import * as NavigationBar from "expo-navigation-bar"; // Importe ça
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
+import RootNavigator from "./src/navigation/RootNavigator";
 
 export default function App() {
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <StatusBar style="dark" translucent={true} />
-        <BottomTabNavigator />
+        <RootNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );
