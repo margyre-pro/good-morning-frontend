@@ -9,15 +9,19 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { X } from "lucide-react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CartStackParamList } from "../navigation/CartStack";
 import { useCart } from "../hooks/useCart";
 import { Theme } from "../constants/Theme";
+
+type Props = NativeStackScreenProps<CartStackParamList, "Cart">;
 
 const { width: W } = Dimensions.get("window");
 const H_PAD = 20;
 const TAB_PILL_H = 64;
 const FOOTER_H = 54 + 12 + 54; // 2 boutons + gap
 
-export default function CartScreen() {
+export default function CartScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { cart, removeFromCart, updateQuantity, totalPrice } = useCart();
 
@@ -121,7 +125,7 @@ export default function CartScreen() {
             styles.btnFinaliser,
             pressed && { opacity: 0.82 },
           ]}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("Payment")}
         >
           <Text style={styles.btnFinaliserText}>Finaliser ma commande</Text>
         </Pressable>
@@ -131,7 +135,7 @@ export default function CartScreen() {
             styles.btnApplePay,
             pressed && { opacity: 0.82 },
           ]}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("Payment")}
         >
           <Text style={styles.btnApplePayText}> Pay</Text>
         </Pressable>

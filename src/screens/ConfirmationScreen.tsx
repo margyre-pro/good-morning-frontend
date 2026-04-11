@@ -1,46 +1,67 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CartStackParamList } from "../navigation/CartStack";
-import { Theme } from "../constants/Theme";
+import { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Sun } from "lucide-react-native";
+import { useCart } from "../hooks/useCart";
 
-type Props = NativeStackScreenProps<CartStackParamList, "Confirmation">;
+export default function ConfirmationScreen() {
+  const insets = useSafeAreaInsets();
+  const { clearCart } = useCart();
 
-export default function ConfirmationScreen({ navigation }: Props) {
+  useEffect(() => {
+    clearCart();
+  }, []);
+
   return (
-    <SafeAreaView style={styles.root} edges={["top"]}>
-      <View style={styles.center}>
-        <Text style={styles.emoji}>🎉</Text>
-        <Text style={styles.title}>Commande confirmée</Text>
-        <Text style={styles.subtitle}>ConfirmationScreen</Text>
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.popToTop()}
-        >
-          <Text style={styles.btnText}>Retour au panier</Text>
-        </Pressable>
+    <LinearGradient
+      colors={["#C84040", "#EB6060", "#F5A585"]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={styles.root}
+    >
+      <View
+        style={[
+          styles.content,
+          { paddingTop: Math.max(insets.top + 60, 100) },
+        ]}
+      >
+        <Sun size={80} color="#FFD580" strokeWidth={1.2} />
+
+        <Text style={styles.title}>{"Merci pour votre\ncommande !"}</Text>
+
+        <Text style={styles.body}>
+          Ante leo velit morbi cras. Velit dictumst iaculis sem egestas nam at
+          pellentesque lectus morbi. Malesuada adipiscing sit venenatis quis
+          faucibus ut a nisl auctor. Suspendisse urna consectetur fringilla
+          imperdiet quam quis ac.
+        </Text>
       </View>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: Theme.colors.background },
-  center: {
+  root: {
+    flex: 1,
+  },
+  content: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    gap: Theme.spacing.md,
+    paddingHorizontal: 32,
+    gap: 28,
   },
-  emoji: { fontSize: 48 },
-  title: { ...Theme.typography.t1, color: Theme.colors.dark },
-  subtitle: { ...Theme.typography.bodyLg, color: Theme.colors.grayMid },
-  btn: {
-    marginTop: Theme.spacing.lg,
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.sm,
-    borderRadius: 100,
-    backgroundColor: Theme.colors.dark,
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    textAlign: "center",
+    lineHeight: 36,
   },
-  btnText: { color: Theme.colors.white, fontSize: 14, fontWeight: "600" },
+  body: {
+    fontSize: 15,
+    color: "rgba(255,255,255,0.82)",
+    textAlign: "center",
+    lineHeight: 22,
+  },
 });

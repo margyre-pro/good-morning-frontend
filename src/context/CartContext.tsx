@@ -16,6 +16,7 @@ interface CartContextType {
   addToCart: (product: any) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, amount: number) => void;
+  clearCart: () => void;
   totalPrice: number;
 }
 
@@ -60,15 +61,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
       prevCart.map((item) => {
         if (item.id === productId) {
           const newQuantity = item.quantity + amount;
-          // Si on descend à 0, on pourrait aussi appeler removeFromCart
           return { ...item, quantity: newQuantity > 0 ? newQuantity : 1 };
         }
         return item;
       }),
     );
   };
+
+  // Vider le panier complètement
+  const clearCart = () => setCart([]);
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, totalPrice }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalPrice }}>
       {children}
     </CartContext.Provider>
   );
