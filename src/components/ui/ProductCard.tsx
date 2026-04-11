@@ -1,40 +1,32 @@
-import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Theme } from "../../constants/Theme";
 
-export interface Product {
-  id: string;
+interface ProductCardProps {
   name: string;
   price: string;
   imageSource: any;
+  onPress?: () => void;
 }
 
-interface ProductCardProps {
-  product: Product;
-  onPress: (product: Product) => void;
-}
-
-export default function ProductCard({ product, onPress }: ProductCardProps) {
+export default function ProductCard({
+  name,
+  price,
+  imageSource,
+  onPress,
+}: ProductCardProps) {
   return (
     <Pressable
-      onPress={() => onPress(product)}
+      onPress={onPress}
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
     >
-      {/* 1. IMAGE AVEC DIMENSIONS FIXES FIGMA */}
       <View style={styles.imageContainer}>
-        <Image
-          source={product.imageSource}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <Image source={imageSource} style={styles.image} resizeMode="cover" />
       </View>
-
-      {/* 2. INFOS EN DESSOUS */}
       <View style={styles.infoContainer}>
-        <Text style={styles.name} numberOfLines={1}>
-          {product.name}
+        <Text style={styles.name} numberOfLines={2}>
+          {name}
         </Text>
-        <Text style={styles.price}>{product.price}</Text>
+        <Text style={styles.price}>{price}</Text>
       </View>
     </Pressable>
   );
@@ -42,16 +34,16 @@ export default function ProductCard({ product, onPress }: ProductCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 184, // Ta largeur Figma
+    width: "100%", // le parent contrôle la largeur
     marginBottom: Theme.spacing.lg,
   },
   pressed: {
     opacity: 0.7,
   },
   imageContainer: {
-    width: 184,
-    height: 272, // Ta hauteur Figma
-    borderRadius: Theme.radius.card, // Récupère tes arrondis du Theme
+    width: "100%",
+    aspectRatio: 184 / 272, // proportions Figma conservées
+    borderRadius: Theme.radius.card,
     overflow: "hidden",
     backgroundColor: Theme.colors.grayLight,
   },
@@ -61,7 +53,6 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginTop: Theme.spacing.sm,
-    paddingHorizontal: 2, // Petit ajustement pour l'alignement
   },
   name: {
     ...Theme.typography.bodyLg,

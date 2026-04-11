@@ -1,9 +1,13 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import ProductCard, { Product } from "../components/ui/ProductCard";
+import { Dimensions, StyleSheet, View } from "react-native";
+import ProductCard from "../components/ui/ProductCard";
 import { Theme } from "../constants/Theme";
 
-export const MOCK_PRODUCTS: Product[] = [
+const { width: W } = Dimensions.get("window");
+const H_PAD = Theme.spacing.md;
+const GAP = Theme.spacing.md;
+const CARD_W = (W - H_PAD * 2 - GAP) / 2;
+
+const MOCK_PRODUCTS = [
   {
     id: "1",
     name: "Tahnyc Sérum",
@@ -42,16 +46,17 @@ export const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-// Composant embarquable dans un ScrollView parent — pas de FlatList ici
 export default function ProductGridScreen() {
   return (
     <View style={styles.grid}>
       {MOCK_PRODUCTS.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onPress={(p) => console.log("Produit sélectionné :", p.id)}
-        />
+        <View key={product.id} style={{ width: CARD_W }}>
+          <ProductCard
+            name={product.name}
+            price={product.price}
+            imageSource={product.imageSource}
+          />
+        </View>
       ))}
     </View>
   );
@@ -61,8 +66,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    gap: Theme.spacing.md,
-    paddingHorizontal: Theme.spacing.md,
+    gap: GAP,
+    paddingHorizontal: H_PAD,
   },
 });

@@ -4,15 +4,17 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { Home, LucideIcon, ShoppingBag, User } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Theme } from "../constants/Theme";
-import CartScreen from "../screens/CartScreen";
-import HomeScreen from "../screens/HomeScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import HomeStack from "./HomeStack";
+import CartStack from "./CartStack";
+import ProfileStack from "./ProfileStack";
 
 const Tab = createBottomTabNavigator();
 
-const ACTIVE_COLOR = Theme.colors.primary; // #EB5757
-const INACTIVE_COLOR = Theme.colors.grayMid; // #9B9898
+// ── Couleurs de la pill — l'icône et l'indicateur actif sont corail
+const ACTIVE_COLOR = Theme.colors.primary;  // #EB5757
+const INACTIVE_COLOR = "#A0A0A0";
 
 const ICONS: Record<string, LucideIcon> = {
   Home: Home,
@@ -21,10 +23,15 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 function MyCustomTabBar({ state, navigation }: BottomTabBarProps) {
+  const insets = useSafeAreaInsets();
+  const bottomOffset = insets.bottom > 0 ? insets.bottom + 8 : 24;
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { bottom: bottomOffset }]}>
       <View style={styles.pill}>
         {state.routes.map((route, index) => {
+          // isFocused est vrai dès que l'on est n'importe où dans le stack
+          // de cet onglet (HomeScreen OU CollectionDetailScreen)
           const isFocused = state.index === index;
           const Icon = ICONS[route.name];
           const color = isFocused ? ACTIVE_COLOR : INACTIVE_COLOR;
@@ -48,9 +55,8 @@ function MyCustomTabBar({ state, navigation }: BottomTabBarProps) {
               android_ripple={null}
             >
               <Icon size={24} color={color} strokeWidth={1.5} />
-              <View
-                style={[styles.indicator, { opacity: isFocused ? 1 : 0 }]}
-              />
+              {/* Indicateur corail sous l'onglet actif */}
+              {isFocused && <View style={styles.indicator} />}
             </Pressable>
           );
         })}
@@ -65,12 +71,16 @@ export default function BottomTabNavigator() {
       tabBar={(props) => <MyCustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
+        // Ces props killswitch le rendu natif — le custom tabBar prime
+        tabBarActiveTintColor: Theme.colors.primary,
+        tabBarInactiveTintColor: INACTIVE_COLOR,
+        tabBarItemStyle: { borderBottomWidth: 0 },
         tabBarStyle: { elevation: 0, borderTopWidth: 0 },
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Cart" component={CartScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Cart" component={CartStack} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }
@@ -78,7 +88,6 @@ export default function BottomTabNavigator() {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 30,
     width: "90%",
     alignSelf: "center",
     zIndex: 9999,
@@ -87,35 +96,29 @@ const styles = StyleSheet.create({
     height: 64,
     backgroundColor: Theme.colors.white,
     borderRadius: 100,
-    overflow: "hidden", // Clips the Android ripple to the pill shape
+    overflow: "hidden",
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
-    // Borders and indicators: all zeroed
+    justifyContent: "space-around",
     borderWidth: 0,
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    // Soft shadow
     elevation: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowRadius: 12,
   },
   tabItem: {
     flex: 1,
-    height: "100%",
+    height: 64,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 0,
-    borderBottomWidth: 0,
     padding: 0,
     margin: 0,
   },
   indicator: {
     position: "absolute",
     bottom: 10,
-    width: 28,
+    width: 20,
     height: 3,
     borderRadius: 100,
     backgroundColor: ACTIVE_COLOR,
