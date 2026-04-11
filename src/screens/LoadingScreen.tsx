@@ -23,12 +23,21 @@ const LoadingScreen = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // 1. Ton animation de fondu existante
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim]);
+
+    // 2. LE TIMER À AJOUTER ICI :
+    const timer = setTimeout(() => {
+      navigation.replace("MainTabs");
+    }, 2000); // L'écran restera visible 3 secondes
+
+    // 3. Le nettoyage pour éviter les fuites de mémoire
+    return () => clearTimeout(timer);
+  }, [fadeAnim, navigation]);
 
   return (
     <View style={styles.container}>
