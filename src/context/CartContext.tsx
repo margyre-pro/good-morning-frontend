@@ -19,7 +19,7 @@ interface CartContextType {
   totalPrice: number;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -68,7 +68,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
   return (
-    <CartContext.Provider value={{ cart, addToCart, totalPrice }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, totalPrice }}>
       {children}
     </CartContext.Provider>
   );

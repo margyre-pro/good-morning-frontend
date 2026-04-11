@@ -17,8 +17,8 @@ const ACTIVE_COLOR = Theme.colors.primary;  // #EB5757
 const INACTIVE_COLOR = "#A0A0A0";
 
 const ICONS: Record<string, LucideIcon> = {
-  Home: Home,
-  Cart: ShoppingBag,
+  HomeTab: Home,
+  CartTab: ShoppingBag,
   Profile: User,
 };
 
@@ -78,8 +78,8 @@ export default function BottomTabNavigator() {
         tabBarStyle: { elevation: 0, borderTopWidth: 0 },
       }}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Cart" component={CartStack} />
+      <Tab.Screen name="HomeTab" component={HomeStack} />
+      <Tab.Screen name="CartTab" component={CartStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

@@ -18,7 +18,10 @@ export default function HomeStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
-      <Stack.Screen name="CollectionDetail" component={CollectionDetailScreen} />
+      <Stack.Screen
+        name="CollectionDetail"
+        component={CollectionDetailScreen}
+      />
       <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
     </Stack.Navigator>
   );

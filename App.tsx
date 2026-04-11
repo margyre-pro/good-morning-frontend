@@ -9,8 +9,6 @@ import { CartProvider } from "./src/context/CartContext";
 export default function App() {
   return (
     <CartProvider>
-      {" "}
-      {/* On enveloppe tout ici */}
       <SafeAreaProvider>
         <NavigationContainer>
           <RootNavigator />
